@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+// import App from './App';
+import Hello from './Hello';
 import * as serviceWorker from './serviceWorker';
+import 'tachyons';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Hello greeting={'Hello Tichif'} />
   </React.StrictMode>,
   document.getElementById('root')
 );
