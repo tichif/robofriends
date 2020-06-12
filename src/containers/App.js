@@ -4,6 +4,20 @@ import SearchBox from '../components/SearchBox';
 import Scroll from '../components/Scroll';
 import ErrorBoundry from '../components/ErrorBoundry';
 import './App.css';
+import { setSearchField } from '../actions';
+import { connect } from 'react-redux';
+
+const mapStateToProps = (state) => {
+  return {
+    searchField: state.searchField,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSearchChange: (event) => dispatch(setSearchField(event.target.value)),
+  };
+};
 
 class App extends Component {
   // adding state to our app
@@ -11,7 +25,6 @@ class App extends Component {
     super();
     this.state = {
       robots: [],
-      searchField: '',
     };
   }
 
@@ -26,14 +39,9 @@ class App extends Component {
       });
   }
 
-  // Search event
-  onSearchChange = (event) => {
-    // if you want to change the state of a value, you should use this.setState({the state : the value})
-    this.setState({ searchField: event.target.value });
-  };
-
   render() {
-    const { robots, searchField } = this.state;
+    const { robots } = this.state;
+    const { searchField, onSearchChange } = this.props;
     const filteredRobots = robots.filter((robot) => {
       return robot.name.toLowerCase().includes(searchField.toLowerCase());
     });
@@ -42,7 +50,7 @@ class App extends Component {
     ) : (
       <div className='tc'>
         <h1 className='f1'>Robofriends</h1>
-        <SearchBox searchChange={this.onSearchChange}></SearchBox>
+        <SearchBox searchChange={onSearchChange}></SearchBox>
         <Scroll>
           <ErrorBoundry>
             <CardList robots={filteredRobots} />
@@ -53,4 +61,5 @@ class App extends Component {
   }
 }
 
-export default App;
+// connect is a high order function witch returns an another function
+export default connect(mapStateToProps, mapDispatchToProps)(App);
